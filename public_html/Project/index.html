@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Prosjektbeskrivelse av BlogApp</title>
+  </head>
+  <body>
+    <h1>Prosjektbeskrivelse av BlogApp</h1>
+    <p>BlogApp blir utviklet av <a href="mailto:christian.rasmussen@me.com">Christian Rasmussen</a> (080599) som en del av faget Databaser og Web ved <a href="http://hit.no/">Høgskolen i Telemark</a>.</p>
+    <h2>Introduksjon</h2>
+    <p>BlogApp er en web-applikasjonen for blogging. Den inneholder funksjoner for å lese og skrive blogginnlegg, samt kommentere på disse. Jeg vil legge stor vekt på at web-applikasjonen blir interaktiv og brukervennlig.</p>
+    <p>Denne web-applikasjonen retter seg mot alle som ønsker å formidle noe, være seg dagens hendelser eller temaer man er opptatt av.</p>
+    <h2>Brukergrensesnitt</h2>
+    <p><img src="Images/MainPage.png"></p>
+    <p><i>Hovedsiden viser en liste over blogginnlegg.</i></p>
+    <p><img src="Images/PostDetails.png"></p>
+    <p><i>￼￼Et enkelt blogginnlegg med tilhørende kommentarer.</i></p>
+    <p><img src="Images/EditPost.png"></p>
+    <p><i>Et blogginnlegg som blir redigert.</i></p>
+    <h2>Database</h2>
+    <p>Tabeller:</p>
+    <ul>
+      <li>users (<u>user_id</u>, username, password)</li>
+      <li>posts (<u>post_id</u>, user_id*, title, body, created_at, modified_at)</li>
+      <li>comments (<u>comment_id</u>, post_id*, user_id*, name, body, created_at)</li>
+    </ul>
+    <h2>Funksjonalitet</h2>
+    <p>Web-applikasjonen skal bestå av to deler; en åpen del og en passordbeskyttet del.</p>
+    <p>Åpen del:</p>
+    <ul>
+      <li>Forsiden viser en liste med de siste blogginnleggene.</li>
+      <li>Alle brukere kan åpne blogginnlegg for å lese og skrive kommentarer.</li>
+      <li>Alle brukere kan søke etter gamle blogginnlegg.</li>
+      <li>En RSS-fil genereres for enkel tilgang til blogginnleggene fra eksterne kilder.</li>
+    </ul>
+    <p>Passordbeskyttet del:</p>
+    <ul>
+      <li>Administratorer kan legge til, endre og slette blogginnlegg og kommentarer.</li>
+    </ul>
+    <p>For at web-applikasjonen skal være så interaktiv som mulig vil jeg sørge for at alle handlinger skjer sømløst, altså uten at nettsiden trenger å lastes inn på nytt. I tillegg skal blogginnleggene kunne redigeres på stedet slik at administratoren ser hvordan innlegget vil se ut (WYSIWYG).</p>
+    <p>Andre funksjoner som er aktuelle i et bloggsystem, men som jeg i utgangspunktet ikke vil implementere:</p>
+    <ul>
+      <li>Legge til og slette administratorer.</li>
+      <li>Endre på blogglogoen og design av bloggen.</li>
+      <li>Sanntidsoppdatering for nye blogginnlegg og kommentarer.</li>
+    </ul>
+  </body>
+</html>
