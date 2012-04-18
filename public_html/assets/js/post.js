@@ -18,20 +18,30 @@ function navigateToPost(postURL) {
 	navigateToPage('PostDetails', postURL);
 }
 
+
 /* New post button */
 
-function addPost(target) {
-	var post = $(target);
-	post.css('display', 'block');
+function addPost() {
+	currentEditPost = $('#post-0');
+	setNewPostMode(true);
 	
-	var buttonElement = $('#new-post button');
-	buttonElement.css('display', 'none');
-	
-	setPostEditMode(post, true);
-	
-	console.log('Adding post: ' + post.attr('id'));
+	console.log('Adding new post');
 }
 
+function setNewPostMode(isEditMode) {
+	var post = $('#post-0');
+	showNewPost(isEditMode);
+	showNewPostButton(!isEditMode)
+	setPostEditMode(post, isEditMode);
+}
+
+function showNewPostButton(show) {
+	showElement('#new-post-section button', show);
+}
+
+function showNewPost(show) {
+	showElement('#post-0', show);
+}
 
 /* Edit post buttons */
 
@@ -74,6 +84,11 @@ function cancelEditPost() {
 	
 	console.log('Canceling edit post: ' + post.attr('id'));
 	
+	if (post.attr('id') == 'post-0') {
+		setNewPostMode(false);
+		return;
+	}
+	
 	// Fetch contents
 	var postURL = post.attr('data-post-url');
 	var url = concatenatePageURL($app.baseURL, 'PostDetails', postURL, {action: 'getPost', onlyContents: true});
@@ -101,8 +116,10 @@ function savePost() {
 	var body = bodyElement.html();
 	
 	// Fetch contents
-	var postURL = post.attr('data-post-url');
-	var url = concatenatePageURL($app.baseURL, 'PostDetails', postURL, {action: 'updatePost', onlyContents: true});
+	var isNewPost = (post.attr('id') == 'post-0');
+	var action = (isNewPost) ? 'addPost' : 'updatePost';
+	var postURL = post.attr('id');
+	var url = concatenatePageURL($app.baseURL, 'PostDetails', postURL, {action: action, onlyContents: true});
 	var postData = {
 		title: title,
 		body: body
@@ -111,12 +128,20 @@ function savePost() {
 	$.post(url, postData, function (data) {
 		// Save successful
 		if (data.length > 0) {
-			post.replaceWith(data);
+			if (isNewPost) {
+				var postsElement = $('#posts-section');
+				postsElement.prepend(data);
+				
+				setNewPostMode(false);
+			}
+			else {
+				post.replaceWith(data);
+			}
 		}
 	});
 }
 
-/* Helper methods */
+/* Helper functions */
 
 function setPostEditMode(post, isEditMode) {
 	// Show/hide hide-on-edit-post elements
@@ -170,7 +195,7 @@ function highlightBody(post) {
 }
 
 
-/* Styling methods */
+/* Styling */
 
 function setHeadingStyle() {
 	setBlockStyle('h3');

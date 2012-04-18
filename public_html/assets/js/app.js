@@ -25,7 +25,7 @@ function configureAdminStylesheet() {
 }
 
 
-/* Navigation */
+/* Helper functions */
 
 function concatenatePageURL(baseURL, page, id, queryParameters)
 {
@@ -48,6 +48,15 @@ function concatenatePageURL(baseURL, page, id, queryParameters)
 	
 	return pageURL;
 }
+
+function showElement(target, show) {
+	var element = $(target);
+	var value = (show) ? 'block' : 'none';
+	element.css('display', value);
+}
+
+
+/* Navigation */
 
 function refreshPage() {
 	navigateToPage($app.page, $app.id);
@@ -110,22 +119,18 @@ window.addEventListener("popstate", function(event) {
 
 /* Toolbar */
 
+
+
 function showEditPostToolbar(show) {
-	var toolbarElement = $('#edit-post-toolbar');
-	var toolbarValue = (show) ? 'block' : 'none';
-	toolbarElement.css('display', toolbarValue);
+	showElement('#edit-post-toolbar', show);
 }
 
 function showSearchField(show) {
-	var searchElement = $('#search-field');
-	var searchValue = (show) ? 'block' : 'none';
-	searchElement.css('display', searchValue);
+	showElement('#search-field', show);
 }
 
 function showBlackBox(show) {
-	var blackBoxElement = $('#black-box');
-	var blackBoxValue = (show) ? 'block' : 'none';
-	blackBoxElement.css('display', blackBoxValue);
+	showElement('#black-box', show);
 }
 
 function logIn() {

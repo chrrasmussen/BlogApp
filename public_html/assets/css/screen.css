@@ -27,7 +27,7 @@ footer a {
 	color: #333;
 }
 
-header, .entry, #sidebar, #comments, #new-comment {
+header, .entry, #sidebar, #comments-section, #new-comment-section {
 	margin-top: 20px;
 	padding: 20px;
 	
@@ -88,16 +88,16 @@ p {
 
 /* New entry */
 
-#new-post {
+#new-post-section {
 	display: none;
 }
 
-#new-post button {
+#new-post-section button {
 	margin-top: 20px;
 	width: 100%;
 }
 
-#new-post .entry {
+#new-post-section .entry {
 	display: none;
 }
 
@@ -128,7 +128,7 @@ p {
 
 /* New Comment */
 
-#new-comment form {
+#new-comment-section form {
 	margin: 9px 0 0 0;
 }
 

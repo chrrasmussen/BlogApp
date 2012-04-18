@@ -57,9 +57,6 @@ class PostDetails extends AbstractPage
 		$postId = Post::getIdFromPostURL($this->id);
 		$comments = Comment::getCommentsForPostId($postId);
 		
-		if (count($comments) == 0)
-			return Comment::getNoCommentsContents();
-		
 		$output = '';
 		foreach ($comments as $comment)
 		{
@@ -102,7 +99,10 @@ class PostDetails extends AbstractPage
 		$postId = Post::getIdFromPostURL($this->id);
 		$userId = App::getUser()->getUserId();
 		$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
-		$body = filter_input(INPUT_POST, 'body', FILTER_SANITIZE_STRING);
+		$body = filter_input(INPUT_POST, 'body', FILTER_DEFAULT, array(FILTER_FLAG_NO_ENCODE_QUOTES, FILTER_FLAG_STRIP_LOW, FILTER_FLAG_STRIP_HIGH, FILTER_FLAG_ENCODE_LOW, FILTER_FLAG_ENCODE_HIGH, FILTER_FLAG_ENCODE_AMP));
+		
+		if (empty($title) || empty($body))
+			return;
 		
 		$post = new Post();
 		$post->postId = $postId;
@@ -122,6 +122,9 @@ class PostDetails extends AbstractPage
 		$userId = App::getUser()->getUserId();
 		$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
 		$body = filter_input(INPUT_POST, 'body', FILTER_DEFAULT, array(FILTER_FLAG_NO_ENCODE_QUOTES, FILTER_FLAG_STRIP_LOW, FILTER_FLAG_STRIP_HIGH, FILTER_FLAG_ENCODE_LOW, FILTER_FLAG_ENCODE_HIGH, FILTER_FLAG_ENCODE_AMP));
+		
+		if (empty($title) || empty($body))
+			return;
 		
 		$this->post->userId = $userId;
 		$this->post->title = $title;

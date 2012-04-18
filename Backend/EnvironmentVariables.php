@@ -7,7 +7,7 @@
  */
 if ($_SERVER['SERVER_NAME'] == 'db-kurs.hit.no')
 {
-	$_ENV['mysql']['host'] = 'localhost'; // TODO: May not be correct
+	$_ENV['mysql']['host'] = 'localhost';
 	$_ENV['mysql']['port'] = 3306;
 	$_ENV['mysql']['database'] = 'db080599';
 	$_ENV['mysql']['username'] = 's080599';

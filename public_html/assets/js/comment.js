@@ -1,3 +1,5 @@
+/* Add/delete comment */
+
 function addComment() {
 	// Get name
 	var nameElement = $('#new-comment-name');
@@ -19,10 +21,16 @@ function addComment() {
 	$.post(url, postData, function (data) {
 		// Add comment successful
 		if (data.length > 0) {
-			var commentsElement = $('#comments');
+			showNoCommentsText(false);
+			
+			var commentsElement = $('#comments-section');
 			commentsElement.append(data);
 		}
 	});
+}
+
+function showNoCommentsText(show) {
+	showElement('.no-comments', show);
 }
 
 function deleteComment(target) {
@@ -35,7 +43,7 @@ function deleteComment(target) {
 	if (response != true)
 		return;
 	
-	// Fetch contents
+	// Send request
 	var commentId = comment.attr('data-comment-id');
 	var url = concatenatePageURL($app.baseURL, $app.page, $app.id, {action: 'deleteComment', onlyContents: true});
 	var postData = {
@@ -46,6 +54,11 @@ function deleteComment(target) {
 		// Delete successful
 		if (data.length > 0) {
 			comment.remove();
+			
+			var commentsElement = $('#comments-section');
+			if (!commentsElement.has('.comment').length) {
+				showNoCommentsText(true);
+			}
 		}
 	});
 }

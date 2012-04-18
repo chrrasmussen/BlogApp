@@ -1,1 +1,0 @@
-<p class="no-comments">No comments</p>

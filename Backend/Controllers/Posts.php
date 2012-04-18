@@ -23,7 +23,6 @@ class Posts extends AbstractPage
 	
 	public function getTemplateValues()
 	{
-		$values['newPost'] = $this->getNewPost();
 		$values['posts'] = $this->getPosts();
 		
 		return $values;
@@ -42,16 +41,15 @@ class Posts extends AbstractPage
 	private function getPosts()
 	{
 		$searchQuery = filter_input(INPUT_GET, 'query', FILTER_SANITIZE_STRING);
+/*
 		$offset = filter_input(INPUT_GET, 'offset', FILTER_SANITIZE_STRING);
 		$limit = filter_input(INPUT_GET, 'limit', FILTER_SANITIZE_STRING);
+*/
 		
 		if (!empty($searchQuery))
 			$posts = Post::getPostsForSearchQuery($searchQuery, 10);
 		else
-			$posts = Post::getPosts(10, $offset);
-		
-		if (count($posts) == 0)
-			return Post::getNoPostsContents();
+			$posts = Post::getPosts(10, 0);
 		
 		$output = '';
 		foreach ($posts as $post)
@@ -62,13 +60,6 @@ class Posts extends AbstractPage
 		return $output;
 	}
 	
-	private function getNewPost()
-	{
-		if (App::isLoggedIn())
-			return Template::parse(__DIR__ . '/../Views/Snippets/NewPost.php');
-		
-		return '';
-	}
 	
 	// ---
 	// Actions

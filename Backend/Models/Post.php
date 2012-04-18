@@ -92,11 +92,6 @@ class Post extends AbstractModel implements TemplateInterface
 		return $posts;
 	}
 	
-	public static function getNoPostsContents()
-	{
-		return Template::parse(__DIR__ . '/../Views/Snippets/NoPosts.php');
-	}
-	
 	public static function deletePostForId($postId)
 	{
 		$db = App::getDB();
@@ -196,7 +191,7 @@ class Post extends AbstractModel implements TemplateInterface
 		if (($db->query($query)) && ($db->affected_rows > 0))
 		{
 			$this->setPostId($db->insert_id);
-			$this->setModifiedAt('Y-m-d H:i:s');
+			$this->setModifiedAt(date('Y-m-d H:i:s'));
 			return true;
 		}
 	}

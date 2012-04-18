@@ -38,7 +38,7 @@ abstract class AbstractPage implements TemplateInterface
 			'contents' => $contents
 		));
 		
-		print($output);
+		return $output;
 	}
 	
 	public function getRequiredAuthorizationLevel()
@@ -73,16 +73,27 @@ abstract class AbstractPage implements TemplateInterface
 			{
 				if (method_exists($this, $action))
 				{
-					$output = $this->{$action}();
+					if ($action == self::$defaultAction)
+					{
+						$output = ($onlyContents) ? $this->view() : $this->viewPage();
+					}
+					else
+					{
+						$output = $this->{$action}();
+					}
 					
-					if ($onlyContents == true && !empty($output))
-						print($output);
+					print($output);
 				}
 			}
 		}
 		
+/*
 		if ($onlyContents == false)
+		{
 			$this->viewPage();
+			return;
+		}
+*/
 	}
 	
 	
