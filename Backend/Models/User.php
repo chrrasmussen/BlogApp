@@ -1,7 +1,7 @@
 <?php
 
+require_once(__DIR__ . '/../App.php');
 require_once(__DIR__ . '/AbstractModel.php');
-/* require_once(__DIR__ . '/../Libraries/Cryptography/Bcrypt.php'); */
 
 
 /**
@@ -12,67 +12,115 @@ require_once(__DIR__ . '/AbstractModel.php');
 class User extends AbstractModel
 {
 	protected $userId;
-	protected $username;
+	protected $fullName;
+	protected $email;
 	protected $password;
+	protected $authorizationLevel;
+	
+	
+	// ---
+	// Creating User instances
+	// ---
+	
+	public static function getUserForId($userId)
+	{
+		$db = App::getDB();
+		
+		$query = sprintf("SELECT userId, fullName, email, password, authorizationLevel FROM users WHERE userId = '%s'",
+			$db->real_escape_string($userId)
+		);
+		
+		if (($result = $db->query($query)) && ($result->num_rows > 0))
+		{
+			return $result->fetch_object(__CLASS__);
+		}
+	}
+	
+	public static function getUserByEmailAndPassword($email, $password)
+	{
+		$db = App::getDB();
+		
+		$query = sprintf("SELECT userId, fullName, email, password, authorizationLevel FROM users WHERE email = '%s' AND password = '%s'",
+			$db->real_escape_string($email),
+			$db->real_escape_string($password)
+		);
+		
+		if (($result = $db->query($query)) && ($result->num_rows > 0))
+		{
+			return $result->fetch_object(__CLASS__);
+		}
+	}
+	
+	
+	// Accessors
+	
+	public function getUserId()
+	{
+		return intval($this->userId);
+	}
+	
+	
+	// ---
+	// AbstractModel methods
+	// ---
 	
 	protected function getModelAttributes()
 	{
 		return array(
 			'userId' => 'integer',
-			'username' => 'string',
-			'password' => 'string'
+			'fullName' => 'string',
+			'email' => 'string',
+			'password' => 'string',
+			'authorizationLevel' => 'integer'
 		);
-	}
-	
-	public function __construct($username, $password)
-	{
-		$this->setUsername($username);
-		$this->setPassword($password);
-	}
-	
-	public function save()
-	{
-		if (!$this->isPersisted())
-			return $this->insert();
-		else
-			return $this->update();
 	}
 	
 	public function delete()
 	{
-		$db = DatabaseManager::getDB();
+		$db = App::getDB();
+		
 		$query = sprintf("DELETE FROM users WHERE userId = '%s'",
 			$db->real_escape_string($this->getUserId())
 		);
-		if ($db->query($query))
+		
+		if (($db->query($query)) && ($db->affected_rows > 0))
 		{
+			$this->setUserId(0);
 			return true;
 		}
 	}
 	
-	private function insert()
+	protected function insert()
 	{
-		$db = DatabaseManager::getDB();
-		$query = sprintf("INSERT INTO users (username, password) VALUES (%s, %s)",
-			$db->real_escape_string($this->getUsername()),
-			$db->real_escape_string($this->getPassword())
-		);
-		if ($db->query($query))
-		{
-			$userId = $db->insert_id();
-			return true;
-		}
-	}
-	
-	private function update()
-	{
-		$db = DatabaseManager::getDB();
-		$query = sprintf("UPDATE users SET username = '%s', password = '%s' WHERE userId = '%s'",
-			$db->real_escape_string($this->getUsername()),
+		$db = App::getDB();
+		
+		$query = sprintf("INSERT INTO users (fullName, email, password, authorizationLevel) VALUES ('%s', '%s', '%s', '%s')",
+			$db->real_escape_string($this->getFullName()),
+			$db->real_escape_string($this->getEmail()),
 			$db->real_escape_string($this->getPassword()),
+			$db->real_escape_string($this->getAuthorizationLevel())
+		);
+		
+		if (($db->query($query)) && ($db->affected_rows > 0))
+		{
+			$this->setUserId($db->insert_id);
+			return true;
+		}
+	}
+	
+	protected function update()
+	{
+		$db = App::getDB();
+		
+		$query = sprintf("UPDATE users SET fullName = '%s', email = '%s', password = '%s', authorizationLevel = '%s' WHERE userId = '%s'",
+			$db->real_escape_string($this->getFullName()),
+			$db->real_escape_string($this->getEmail()),
+			$db->real_escape_string($this->getPassword()),
+			$db->real_escape_string($this->getAuthorizationLevel()),
 			$db->real_escape_string($this->getUserId())
 		);
-		if ($db->query($query)) // TODO: Check mysql_affected_rows() instead?
+		
+		if (($db->query($query)) && ($db->affected_rows > 0))
 		{
 			return true;
 		}
@@ -80,25 +128,6 @@ class User extends AbstractModel
 	
 	public function isPersisted()
 	{
-		return ($userId > 0);
-	}
-	
-	
-	public static function addUser($username, $password)
-	{
-		$user = new self($username, $password);
-		return $user->insert();
-	}
-	
-	public static function getUserById($userId)
-	{
-		$db = DatabaseManager::getDB();
-		$query = sprintf("SELECT * FROM users WHERE userId = '%s'",
-			$db->real_escape_string($userId)
-		);
-		if ($result = $db->query($query))
-		{
-			return $result->fetch_object(__CLASS__);
-		}
+		return ($this->getUserId() > 0);
 	}
 }

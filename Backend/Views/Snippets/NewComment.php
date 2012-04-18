@@ -1,14 +1,8 @@
-<form method="post" action="" class="form-stacked">
+<h3>New Comment</h3>
+<form method="post" action="<?=App::ConcatenatePageURL(App::getBaseURL(), App::getPage(), App::getId(), array('action' => 'addComment'))?>">
   <fieldset>
-    <legend>New Comment</legend>
-    <div class="clearfix">
-      <input type="text" placeholder="Name" class="span6">
-    </div>
-    <div class="clearfix">
-      <textarea placeholder="Comment" class="span6"></textarea>
-    </div>
-    <div class="clearfix">
-      <input type="submit" value="Post Comment" class="btn primary">
-    </div>
+    <input type="text" placeholder="Name" class="span7" name="name" id="new-comment-name">
+    <textarea placeholder="Comment" class="span7" name="body" id="new-comment-body"></textarea>
   </fieldset>
+  <button type="submit" class="btn btn-primary" onclick="addComment(); return false;"><i class="icon-comment icon-white"></i> Post Comment</button>
 </form>

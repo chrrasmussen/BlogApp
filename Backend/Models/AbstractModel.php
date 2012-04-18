@@ -4,14 +4,61 @@
  * Abstract model
  *
  * Subclasses will gain the following benefits:
- * - Dynamic accessors, i.e. $obj->setAttribute($value) is equal to $obj->attribute = $value
+ * - Dynamic accessors/mutators, i.e. $obj->setAttribute($value) is equal to $obj->attribute = $value
  * - The types of the input values are automatically validated
- * - Accessor implementations are called even if the attribute is accessed by property
+ * - Accessor/mutator implementations are called even if the attribute is accessed by property
  *
  * @author Christian Rasmussen <christian.rasmussen@me.com>
  */
 abstract class AbstractModel
 {
+	// ---
+	// CRUD
+	// ---
+	
+	/**
+	 * Save instance to data store
+	 */
+	public final function save()
+	{
+		if (!$this->isPersisted())
+			return $this->insert();
+		else
+			return $this->update();
+	}
+	
+	/**
+	 * Delete instance from data store
+	 */
+	public abstract function delete();
+	
+	/**
+	 * Insert instance into data store
+	 */
+	protected abstract function insert();
+	
+	/**
+	 * Update instance in data store
+	 */
+	protected abstract function update();
+	
+	/**
+	 * Check if instance is persisted in data store
+	 */
+	public abstract function isPersisted();
+	
+	
+	// ---
+	// Dynamic accessors/mutators
+	// ---
+	
+	/**
+	 * Gets a list of model attributes
+	 * 
+	 * Subclasses should override this method. The method returns an associative array where:
+	 * - Keys represent the name of the attribute
+	 * - Values represent the type of the attribute
+	 */
 	protected abstract function getModelAttributes();
 	
 	/**
@@ -37,21 +84,21 @@ abstract class AbstractModel
 	 */
 	public function __set($key, $value)
 	{
-		if ($this->isModelAttribute($key))
-		{
-			// Validate type
-			$inputType = gettype($value);
-			$requiredType = $this->getRequiredType($key);
-			if ($inputType !== $requiredType)
-				throw new InvalidArgumentException("{$key} should be of type {$requiredType} (was {$inputType})");
-			
-			// Call setter if it exists, otherwise assign value to property
-			$setter = sprintf('set%s', ucfirst($key));
-			if (method_exists($this, $setter))
-				$this->$setter($value);
-			else if (property_exists($this, $key))
-				$this->$key = $value;
-		}
+		if (!$this->isModelAttribute($key) || empty($value))
+			return;
+		
+		// Validate type
+		$inputType = gettype($value);
+		$requiredType = $this->getRequiredType($key);
+		if ($inputType !== $requiredType)
+		    throw new InvalidArgumentException("{$key} should be of type {$requiredType} (was {$inputType})");
+		
+		// Call setter if it exists, otherwise assign value to property
+		$setter = sprintf('set%s', ucfirst($key));
+		if (method_exists($this, $setter))
+		    $this->$setter($value);
+		else if (property_exists($this, $key))
+		    $this->$key = $value;
 	}
 	
 	/**

@@ -1,0 +1,23 @@
+/* New Entry */
+
+#new-post {
+	display: block;
+}
+
+
+/* Entry */
+
+.entry:hover .post-metadata {
+  visibility: hidden;
+}
+
+.entry:hover .post-actions {
+  display: block;
+}
+
+
+/* Comment */
+
+.comment:hover .btn-group {
+  display: block;
+}

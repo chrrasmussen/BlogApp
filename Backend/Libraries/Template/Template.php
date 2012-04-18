@@ -10,7 +10,7 @@ require_once(__DIR__ . '/TemplateInterface.php');
  */
 class Template
 {
-	public static function parse($templateFile, array $values)
+	public static function parse($templateFile, array $values = array())
 	{
 		// Decide path and validate
 		if (is_readable($templateFile) === false)
@@ -29,8 +29,9 @@ class Template
 		return $output;
 	}
 	
-	public static function parseTemplateInterface(TemplateInterface $source)
+	public static function parseTemplateInterface(TemplateInterface $source, array $additionalValues = array())
 	{
-		return self::parse($source->getTemplateFile(), $source->getTemplateValues());
+		$values = array_merge($source->getTemplateValues(), $additionalValues);
+		return self::parse($source->getTemplateFile(), $values);
 	}
 }

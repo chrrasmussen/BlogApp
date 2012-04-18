@@ -2,8 +2,9 @@
 <?=$posts?>
 </section>
 <section id="comments">
+  <h3>Comments</h3>
 <?=$comments?>
 </section>
 <section id="new-comment">
-<? include(__DIR__ . '/../Snippets/NewComment.php') ?>
+<?php include(__DIR__ . '/../Snippets/NewComment.php'); ?>
 </section>

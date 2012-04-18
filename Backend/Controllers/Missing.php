@@ -15,7 +15,19 @@ class Missing extends AbstractPage
 		return 'Missing';
 	}
 	
-	public function getContentsFile()
+	
+	// ---
+	// TemplateInterface methods
+	// ---
+	
+	public function getTemplateValues()
+	{
+		$actions = parent::getAllowedActions();
+		
+		return $actions;
+	}
+	
+	public function getTemplateFile()
 	{
 		return __DIR__ . '/../Views/Pages/Missing.php';
 	}

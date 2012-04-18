@@ -11,6 +11,7 @@ require_once(__DIR__ . '/../Libraries/Template/Template.php');
 abstract class AbstractPage implements TemplateInterface
 {
 	protected $id;
+	protected static $defaultAction = 'view';
 	
 	
 	// ---
@@ -24,19 +25,21 @@ abstract class AbstractPage implements TemplateInterface
 	
 	
 	// ---
-	// Display page
-	// ---
-	
-	public function display()
-	{
-		$contents = Template::parseTemplateInterface($this);
-		print($contents);
-	}
-	
-	
-	// ---
 	// Page contents
 	// ---
+	
+	public function viewPage()
+	{
+		$contents = $this->view();
+		
+		$mainFile = __DIR__ . '/../Views/Main.php';
+		$output = Template::parse($mainFile, array(
+			'title' =>  $this->getTitle(),
+			'contents' => $contents
+		));
+		
+		print($output);
+	}
 	
 	public function getRequiredAuthorizationLevel()
 	{
@@ -45,10 +48,6 @@ abstract class AbstractPage implements TemplateInterface
 	
 	public abstract function getTitle();
 	
-/* 	public abstract function getToolbar() */
-	
-	public abstract function getContentsFile();
-	
 	
 	// ---
 	// Perform arbitrary action
@@ -56,11 +55,16 @@ abstract class AbstractPage implements TemplateInterface
 	
 	protected function getAllowedActions()
 	{
-		return array();
+		$actions['view'] = $this->getRequiredAuthorizationLevel();
+		
+		return $actions;
 	}
 	
-	public final function performAction($action, $authorizationLevel = 0)
+	public final function performAction($action, $authorizationLevel = 0, $onlyContents = false)
 	{
+		if (empty($action))
+			$action = self::$defaultAction;
+		
 		$allowedActions = $this->getAllowedActions();
 		if (array_key_exists($action, $allowedActions))
 		{
@@ -68,26 +72,26 @@ abstract class AbstractPage implements TemplateInterface
 			if ($authorizationLevel >= $requiredAuthorizationLevel)
 			{
 				if (method_exists($this, $action))
-					$this->{$action}();
+				{
+					$output = $this->{$action}();
+					
+					if ($onlyContents == true && !empty($output))
+						print($output);
+				}
 			}
 		}
-	}
-	
-	
-	// ---
-	// TemplateInterface methods
-	// ---
-	
-	public function getTemplateValues()
-	{
-		$values['title'] =  $this->getTitle();
-		$values['contentsFile'] = $this->getContentsFile();
 		
-		return $values;
+		if ($onlyContents == false)
+			$this->viewPage();
 	}
 	
-	public function getTemplateFile()
+	
+	// ---
+	// Actions
+	// ---
+	
+	public function view()
 	{
-		return __DIR__ . '/../Views/Main.php';
+		return Template::parseTemplateInterface($this);
 	}
 }

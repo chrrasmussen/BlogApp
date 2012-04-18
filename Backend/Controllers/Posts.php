@@ -16,17 +16,22 @@ class Posts extends AbstractPage
 		return 'Posts';
 	}
 	
-	public function getContentsFile()
-	{
-		return __DIR__ . '/../Views/Pages/Posts.php';
-	}
+	
+	// ---
+	// TemplateInterface methods
+	// ---
 	
 	public function getTemplateValues()
 	{
-		$values = parent::getTemplateValues();
+		$values['newPost'] = $this->getNewPost();
 		$values['posts'] = $this->getPosts();
 		
 		return $values;
+	}
+	
+	public function getTemplateFile()
+	{
+		return __DIR__ . '/../Views/Pages/Posts.php';
 	}
 	
 	
@@ -34,27 +39,36 @@ class Posts extends AbstractPage
 	// Get values
 	// ---
 	
-	public function getPosts()
+	private function getPosts()
 	{
-		$posts = array(
-			Template::parse(__DIR__ . '/../Views/Snippets/SinglePost.php', array(
-				'title' => 'Post 2',
-				'name' => 'Christian Rasmussen',
-				'date' => '2012-01-27',
-				'body' => 'This is my second post!'
-			)),
-			
-			Template::parse(__DIR__ . '/../Views/Snippets/SinglePost.php', array(
-				'title' => 'Post 1',
-				'name' => 'Christian Rasmussen',
-				'date' => '2012-01-26',
-				'body' => 'This is my first post!'
-			))
-		);
+		$searchQuery = filter_input(INPUT_GET, 'query', FILTER_SANITIZE_STRING);
+		$offset = filter_input(INPUT_GET, 'offset', FILTER_SANITIZE_STRING);
+		$limit = filter_input(INPUT_GET, 'limit', FILTER_SANITIZE_STRING);
 		
-		return implode($posts);
+		if (!empty($searchQuery))
+			$posts = Post::getPostsForSearchQuery($searchQuery, 10);
+		else
+			$posts = Post::getPosts(10, $offset);
+		
+		if (count($posts) == 0)
+			return Post::getNoPostsContents();
+		
+		$output = '';
+		foreach ($posts as $post)
+		{
+			$output .= (string)$post;
+		}
+		
+		return $output;
 	}
 	
+	private function getNewPost()
+	{
+		if (App::isLoggedIn())
+			return Template::parse(__DIR__ . '/../Views/Snippets/NewPost.php');
+		
+		return '';
+	}
 	
 	// ---
 	// Actions
@@ -62,13 +76,8 @@ class Posts extends AbstractPage
 	
 	protected function getAllowedActions()
 	{
-		return array(
-			'test' => 11
-		);
-	}
-	
-	public function test()
-	{
-		print('It works!');
+		$actions = parent::getAllowedActions();
+		
+		return $actions;
 	}
 }

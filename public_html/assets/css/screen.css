@@ -1,0 +1,161 @@
+/* Main page */
+
+html, body {
+	background-color: #eee;
+}
+
+body {
+	background-color: #EEEEF0;
+	padding-top: 40px;
+	padding-bottom: 20px;
+}
+
+header {
+	text-align: center;
+}
+
+header h1 {
+	line-height: 100px;
+}
+
+footer {
+	margin-top: 20px;
+	text-align: center;
+}
+
+footer a {
+	color: #333;
+}
+
+header, .entry, #sidebar, #comments, #new-comment {
+	margin-top: 20px;
+	padding: 20px;
+	
+	background-color: #fff;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+p {
+	margin: 9px 0 0 0;
+}
+
+
+/* Navbar */
+
+#black-box {
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	
+	background-color: #000;
+	opacity: 0.6;
+	
+	z-index: 500;
+	display: none;
+}
+
+#login-toolbar p {
+	margin: 0;
+	padding: 10px 10px 11px 10px;
+	line-height: 19px;
+	height: 19;
+}
+
+#login-dropdown form {
+	margin: 0;
+	padding: 10px;
+}
+
+#login-dropdown form button {
+	margin: 0;
+	width: 100%;
+}
+
+#login-dropdown .alert {
+	display: none;
+}
+
+#edit-post-toolbar {
+	display: none;
+}
+
+#edit-post-toolbar .btn-toolbar {
+	margin: 0;
+}
+
+/* New entry */
+
+#new-post {
+	display: none;
+}
+
+#new-post button {
+	margin-top: 20px;
+	width: 100%;
+}
+
+#new-post .entry {
+	display: none;
+}
+
+
+/* Entry */
+
+.entry {
+	position: relative;
+}
+
+.entry .post-metadata {
+	float: right;
+	
+	text-align: right;
+}
+
+.entry .post-actions {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	
+	display: none;
+}
+
+.entry h3 {
+	margin-top: 18px;
+}
+
+/* New Comment */
+
+#new-comment form {
+	margin: 9px 0 0 0;
+}
+
+
+/* Comment */
+
+.comment {
+	position: relative;
+}
+
+.comment .well {
+	margin: 9px 0 0 0;
+	padding: 10px;
+}
+
+.comment .name {
+	font-weight: bold;
+}
+
+.comment .date {
+	color: #555;
+}
+
+.comment .btn-group {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	
+	display: none;
+}
