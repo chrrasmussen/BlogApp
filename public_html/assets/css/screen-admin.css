@@ -15,6 +15,16 @@
   display: block;
 }
 
+/* New Comment */
+
+#new-comment-logged-in {
+	display: block;
+}
+
+#new-comment-name {
+	display: none;
+}
+
 
 /* Comment */
 

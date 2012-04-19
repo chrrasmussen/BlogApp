@@ -8,6 +8,7 @@
 </section>
 <section id="new-comment-section">
   <h3>New Comment</h3>
+  <p id="new-comment-logged-in"><span class="user-label">Commenting as:</span> <span class="user-full-name"><?=(App::getUser() != null) ? App::getUser()->fullName : ''?></span></p>
   <form method="post" action="<?=App::ConcatenatePageURL(App::getBaseURL(), App::getPage(), App::getId(), array('action' => 'addComment'))?>">
     <fieldset>
       <input type="text" placeholder="Name" class="span7" name="name" id="new-comment-name">

@@ -132,6 +132,14 @@ p {
 	margin: 9px 0 0 0;
 }
 
+#new-comment-logged-in {
+	display: none;
+}
+
+#new-comment-logged-in .user-full-name {
+	font-weight: bold;
+}
+
 
 /* Comment */
 
@@ -142,6 +150,10 @@ p {
 .comment .well {
 	margin: 9px 0 0 0;
 	padding: 10px;
+}
+
+.comment .well.admin {
+	background-color: #eff8fd;
 }
 
 .comment .name {

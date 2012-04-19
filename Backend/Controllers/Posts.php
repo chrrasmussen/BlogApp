@@ -49,7 +49,7 @@ class Posts extends AbstractPage
 		if (!empty($searchQuery))
 			$posts = Post::getPostsForSearchQuery($searchQuery, 10);
 		else
-			$posts = Post::getPosts(10, 0);
+			$posts = Post::getPosts(5, 0);
 		
 		$output = '';
 		foreach ($posts as $post)
@@ -70,5 +70,25 @@ class Posts extends AbstractPage
 		$actions = parent::getAllowedActions();
 		
 		return $actions;
+	}
+	
+	public function getRecentPosts()
+	{
+		$posts = Post::getPosts(5, 0);
+		
+		$output = '';
+		foreach ($posts as $post)
+		{
+			$values['title'] = '';
+			$values['pageURL'] = '';
+			$output .= Template::parse(__DIR__ . '/../Views/Snippets/SidebarRecentPost.php', $values);
+		}
+		
+		return $output;
+	}
+	
+	public function getRecentComments()
+	{
+	
 	}
 }

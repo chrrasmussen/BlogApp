@@ -150,13 +150,25 @@ class PostDetails extends AbstractPage
 		$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 		$body = filter_input(INPUT_POST, 'body', FILTER_SANITIZE_STRING);
 		
-		if (empty($name) || empty($body))
+		// Validate
+		if ((empty($name) && !App::isLoggedIn()) || empty($body))
 			return;
 		
 		$comment = new Comment();
 		$comment->postId = $postId;
-		$comment->name = $name;
 		$comment->body = $body;
+		
+		// Set name
+		if (App::isLoggedIn())
+		{
+			$comment->userId = App::getUser()->userId;
+			$comment->name = App::getUser()->fullName; // In case the user gets deleted
+		}
+		else
+		{
+			$comment->name = $name;
+		}
+		
 		$comment->save();
 		
 		return (string)$comment;

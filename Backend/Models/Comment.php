@@ -103,6 +103,14 @@ class Comment extends AbstractModel implements TemplateInterface
 		return intval($this->userId);
 	}
 	
+	public function getName()
+	{
+		if ($this->getUserId() > 0 && $this->getUser() != null)
+			return $this->getUser()->fullName;
+		
+		return $this->name;
+	}
+	
 	public function getPost()
 	{
 		if (empty($this->post))
@@ -153,12 +161,23 @@ class Comment extends AbstractModel implements TemplateInterface
 	{
 		$db = App::getDB();
 		
-		$query = sprintf("INSERT INTO comments (postId,  name, body, createdAt) VALUES ('%s', '%s', '%s', NOW())", /* userId,  */
-			$db->real_escape_string($this->getPostId()),
-/* 			$db->real_escape_string($this->getUserId()), */
-			$db->real_escape_string($this->getName()),
-			$db->real_escape_string($this->getBody())
-		);
+		if ($this->getUserId() > 0)
+		{
+			$query = sprintf("INSERT INTO comments (postId, userId, name, body, createdAt) VALUES ('%s', '%s', '%s', '%s', NOW())",
+				$db->real_escape_string($this->getPostId()),
+				$db->real_escape_string($this->getUserId()),
+				$db->real_escape_string($this->getName()),
+				$db->real_escape_string($this->getBody())
+			);
+		}
+		else
+		{
+			$query = sprintf("INSERT INTO comments (postId, name, body, createdAt) VALUES ('%s', '%s', '%s', NOW())",
+				$db->real_escape_string($this->getPostId()),
+				$db->real_escape_string($this->getName()),
+				$db->real_escape_string($this->getBody())
+			);
+		}
 		
 		if (($db->query($query)) && ($db->affected_rows > 0))
 		{
@@ -172,13 +191,25 @@ class Comment extends AbstractModel implements TemplateInterface
 	{
 		$db = App::getDB();
 		
-		$query = sprintf("UPDATE comments SET postId = '%s', userId = '%s', name = '%s', body = '%s' WHERE postId = '%s'",
-			$db->real_escape_string($this->getPostId()),
-			$db->real_escape_string($this->getUserId()),
-			$db->real_escape_string($this->getName()),
-			$db->real_escape_string($this->getBody()),
-			$db->real_escape_string($this->getCommentId())
-		);
+		if ($this->getUserId() > 0)
+		{
+			$query = sprintf("UPDATE comments SET postId = '%s', userId = '%s', name = '%s', body = '%s' WHERE postId = '%s'",
+				$db->real_escape_string($this->getPostId()),
+				$db->real_escape_string($this->getUserId()),
+				$db->real_escape_string($this->getName()),
+				$db->real_escape_string($this->getBody()),
+				$db->real_escape_string($this->getCommentId())
+			);
+		}
+		else
+		{
+			$query = sprintf("UPDATE comments SET postId = '%s', name = '%s', body = '%s' WHERE postId = '%s'",
+				$db->real_escape_string($this->getPostId()),
+				$db->real_escape_string($this->getName()),
+				$db->real_escape_string($this->getBody()),
+				$db->real_escape_string($this->getCommentId())
+			);
+		}
 		
 		if (($db->query($query)) && ($db->affected_rows > 0))
 		{
@@ -199,8 +230,10 @@ class Comment extends AbstractModel implements TemplateInterface
 	public function getTemplateValues()
 	{
 		$values['commentId'] = $this->getCommentId();
+		$values['postId'] = $this->getPostId();
+		$values['userId'] = $this->getUserId();
 		$values['name'] = $this->getName();
-		$values['date'] = $this->getCreatedAt();
+		$values['createdAt'] = $this->getCreatedAt();
 		$values['body'] = $this->getBody();
 		
 		return $values;
