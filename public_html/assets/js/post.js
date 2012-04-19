@@ -1,3 +1,10 @@
+/**
+ * Post functions
+ *
+ * @author Christian Rasmussen <christian.rasmussen@me.com>
+ */
+
+
 /* Global variables */
 
 var currentEditPost;
@@ -22,7 +29,9 @@ function navigateToPost(postURL) {
 /* New post button */
 
 function addPost() {
-	currentEditPost = $('#post-0');
+	currentEditPost = $('#post-prototype').clone();
+	currentEditPost.prependTo('#posts-section');
+	currentEditPost.attr('id', 'post-0');
 	setNewPostMode(true);
 	
 	console.log('Adding new post');
@@ -86,7 +95,6 @@ function cancelEditPost() {
 	
 	if (post.attr('id') == 'post-0') {
 		setNewPostMode(false);
-		return;
 	}
 	
 	// Fetch contents
@@ -211,32 +219,6 @@ function setItalicStyle() {
 
 function setUnderlineStyle() {
 	setInlineStyle('u');
-}
-
-function performShortcut(event) {
-	if (!event.ctrlKey)
-		return;
-	
-	var key = String.fromCharCode(event.keyCode);
-	switch (key) {
-	    case 'H':
-	    	setHeadingStyle();
-	    	break;
-	    case 'B':
-	    	setBoldStyle();
-	    	break;
-	    case 'I':
-	    	setItalicStyle();
-	    	break;
-	    case 'U':
-	    	setUnderlineStyle();
-	    	break;
-	}
-	
-	event.preventDefault();
-	event.stopPropagation();
-	return false;
-	// TODO: Stop propagation
 }
 
 function setBlockStyle(elementName) {

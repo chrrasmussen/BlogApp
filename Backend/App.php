@@ -145,7 +145,7 @@ class App
 		self::$onlyContents = isset($_GET['onlyContents']);
 	}
 	
-	private static function setUpDB()
+	public static function setUpDB()
 	{
 		$mc = $_ENV['mysql'];
 		$db = new mysqli($mc['host'], $mc['username'], $mc['password'], $mc['database'], $mc['port']);

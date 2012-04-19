@@ -1,3 +1,10 @@
+/**
+ * Comment functions
+ *
+ * @author Christian Rasmussen <christian.rasmussen@me.com>
+ */
+
+
 /* Add/delete comment */
 
 function addComment() {
@@ -21,15 +28,17 @@ function addComment() {
 	$.post(url, postData, function (data) {
 		// Add comment successful
 		if (data.length > 0) {
-			showNoCommentsText(false);
-			
 			var commentsElement = $('#comments-section');
 			commentsElement.append(data);
+			
+			refreshNoCommentsText();
 		}
 	});
 }
 
-function showNoCommentsText(show) {
+function refreshNoCommentsText() {
+	var commentsElement = $('#comments-section');
+	var show = !(commentsElement.has('.comment').length);
 	showElement('.no-comments', show);
 }
 
@@ -54,11 +63,7 @@ function deleteComment(target) {
 		// Delete successful
 		if (data.length > 0) {
 			comment.remove();
-			
-			var commentsElement = $('#comments-section');
-			if (!commentsElement.has('.comment').length) {
-				showNoCommentsText(true);
-			}
+			refreshNoCommentsText();
 		}
 	});
 }

@@ -1,3 +1,10 @@
+/**
+ * App functions
+ *
+ * @author Christian Rasmussen <christian.rasmussen@me.com>
+ */
+
+
 /* Start-up configuration */
 
 $(function() {

@@ -1,6 +1,6 @@
 <section id="new-post-section"<?=(!App::isLoggedIn()) ? ' style="display: none;"' : ''?>>
-  <button class="btn" onclick="addPost('#post-new');">New Blog Entry</button>
-  <article class="entry" id="post-0">
+  <button class="btn" onclick="addPost();">New Blog Entry</button>
+  <article class="entry" id="post-prototype">
     <h2 class="title editable">Title of New Post</h2>
     <div class="body editable">
       <p>Body of new post.</p>

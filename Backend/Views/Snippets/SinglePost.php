@@ -20,7 +20,7 @@
   </div>
   
   <h2 class="title editable"><a href="<?=App::concatenatePageURL(App::getBaseURL(), App::getPage(), $postURL)?>" onclick="navigateToPost('<?=$postURL?>'); return false;"><?=$title?></a></h2>
-  <div class="body editable" onkeypress="performShortcut(event);">
+  <div class="body editable">
     <?=$body?>
   </div>
 </article>

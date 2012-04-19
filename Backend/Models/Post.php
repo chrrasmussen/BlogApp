@@ -200,7 +200,7 @@ class Post extends AbstractModel implements TemplateInterface
 	{
 		$db = App::getDB();
 		
-		$query = sprintf("UPDATE posts SET userId = '%s', title = '%s', body = '%s' WHERE postId = '%s'",
+		$query = sprintf("UPDATE posts SET userId = '%s', title = '%s', body = '%s', modifiedAt = NOW() WHERE postId = '%s'",
 			$db->real_escape_string($this->getUserId()),
 			$db->real_escape_string($this->getTitle()),
 			$db->real_escape_string($this->getBody()),
@@ -209,6 +209,7 @@ class Post extends AbstractModel implements TemplateInterface
 		
 		if (($db->query($query)) && ($db->affected_rows > 0))
 		{
+			$this->setModifiedAt(date('Y-m-d H:i:s'));
 			return true;
 		}
 	}
