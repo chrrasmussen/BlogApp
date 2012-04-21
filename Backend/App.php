@@ -4,7 +4,7 @@ require_once(__DIR__ . '/EnvironmentVariables.php');
 require_once(__DIR__ . '/PageFactory.php');
 
 require_once(__DIR__ . '/Libraries/Template/Template.php');
-/* require_once(__DIR__ . '/../Backend/Libraries/Cryptography/Bcrypt.php'); */
+require_once(__DIR__ . '/Libraries/Cryptography/Bcrypt.php');
 require_once(__DIR__ . '/Models/User.php');
 
 
@@ -163,10 +163,10 @@ class App
 			$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
 			$password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 			
-			/*
-			$bcrypt = new Bcrypt(7, 'salt'); // TODO: Use a known salt or a random one?
+/*
+			$bcrypt = new Bcrypt(7, 'blogapp');
 			$hashedPassword = $bcrypt->hash($password);
-			*/
+*/
 			
 			$user = User::getUserByEmailAndPassword($email, $password);
 			$isAuthenticated = !empty($user);

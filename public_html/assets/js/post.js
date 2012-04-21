@@ -186,7 +186,6 @@ function validatePostBody(body, bodyText) {
 }
 
 function refreshSaveButtonState(event) {
-	console.log('Check save state');
 	var target = event.target;
 	var post = $(target).closest('article');
 	

@@ -19,7 +19,7 @@
     </div>
   </div>
   
-  <h2 class="title editable" onkeyup="refreshSaveButtonState(event);"><a href="<?=App::concatenatePageURL(App::getBaseURL(), App::getPage(), $postURL)?>" onclick="navigateToPost('<?=$postURL?>'); return false;"><?=$title?></a></h2>
+  <h2 class="title editable" onkeyup="refreshSaveButtonState(event);"><a href="<?=App::concatenatePageURL(App::getBaseURL(), 'PostDetails', $postURL)?>" onclick="navigateToPost('<?=$postURL?>'); return false;"><?=$title?></a></h2>
   <div class="body editable" onkeyup="refreshSaveButtonState(event);">
     <?=$body?>
   </div>

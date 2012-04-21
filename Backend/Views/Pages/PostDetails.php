@@ -17,7 +17,7 @@
     <button type="submit" class="btn btn-primary" onclick="addComment(); return false;"><i class="icon-comment icon-white"></i> Post Comment</button>
   </form>
   <div class="alert alert-error">
-    <div class="name"><strong>Name:</strong> Please fill in the name field. Max 40 characters.</div>
-    <div class="body"><strong>Message:</strong> Please fill in the message field. Max 1 000 characters.</div>
+    <div class="name"><strong>Name:</strong> Please enter a name. Max 40 characters.</div>
+    <div class="body"><strong>Message:</strong> Please enter a comment. Max 1 000 characters.</div>
   </div>
 </section>
