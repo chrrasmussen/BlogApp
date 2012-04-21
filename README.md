@@ -11,4 +11,4 @@ It is built using Twitter Bootstrap and jQuery.
 License
 =======
 
-This library is licensed under the Apache 2.0 license. See LICENSE for more details.
+This web-application is licensed under the Apache 2.0 license. See LICENSE for more details.
