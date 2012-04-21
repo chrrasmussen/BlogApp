@@ -17,10 +17,18 @@ abstract class AbstractModel
 	// ---
 	
 	/**
+	 * Validate instance before save
+	 */
+	protected abstract function validate();
+	
+	/**
 	 * Save instance to data store
 	 */
 	public final function save()
 	{
+		if (!$this->validate())
+			return;
+		
 		if (!$this->isPersisted())
 			return $this->insert();
 		else
@@ -71,9 +79,17 @@ abstract class AbstractModel
 			// Call getter if it exists, otherwise get value from property
 			$getter = sprintf('get%s', ucfirst($key));
 			if (method_exists($this, $getter))
-				return $this->$getter();
+				$value = $this->$getter();
 			else if (property_exists($this, $key))
-				return $this->$key;
+				$value = $this->$key;
+			else
+				return;
+			
+			// Convert to required data type
+			$requiredType = $this->getRequiredType($key);
+			settype($value, $requiredType);
+			
+			return $value;
 		}
 	}
 	

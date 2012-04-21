@@ -1,5 +1,5 @@
 <article class="entry" id="post-<?=$postId?>" data-page-url="<?=App::concatenatePageURL(App::getBaseURL(), App::getPage(), $postURL)?>" data-post-url="<?=$postURL?>" data-title="<?=$title?>">
-  <div class="hide-on-edit-post">
+  <div class="hide-on-edit-post visible-desktop">
     <div class="post-metadata">
       <ul class="unstyled">
         <li><?=$modifiedAt?> <i class="icon-time"></i></li>
@@ -19,8 +19,8 @@
     </div>
   </div>
   
-  <h2 class="title editable"><a href="<?=App::concatenatePageURL(App::getBaseURL(), App::getPage(), $postURL)?>" onclick="navigateToPost('<?=$postURL?>'); return false;"><?=$title?></a></h2>
-  <div class="body editable">
+  <h2 class="title editable" onkeyup="refreshSaveButtonState(event);"><a href="<?=App::concatenatePageURL(App::getBaseURL(), App::getPage(), $postURL)?>" onclick="navigateToPost('<?=$postURL?>'); return false;"><?=$title?></a></h2>
+  <div class="body editable" onkeyup="refreshSaveButtonState(event);">
     <?=$body?>
   </div>
 </article>

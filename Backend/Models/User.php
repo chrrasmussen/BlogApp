@@ -51,15 +51,6 @@ class User extends AbstractModel
 		}
 	}
 	
-	
-	// Accessors
-	
-	public function getUserId()
-	{
-		return intval($this->userId);
-	}
-	
-	
 	// ---
 	// AbstractModel methods
 	// ---
@@ -73,6 +64,12 @@ class User extends AbstractModel
 			'password' => 'string',
 			'authorizationLevel' => 'integer'
 		);
+	}
+	
+	protected function validate()
+	{
+		if ($this->getFullName() && $this->getEmail() && $this->getPassword())
+			return true;
 	}
 	
 	public function delete()

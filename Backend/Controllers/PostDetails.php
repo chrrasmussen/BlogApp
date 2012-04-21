@@ -101,17 +101,16 @@ class PostDetails extends AbstractPage
 		$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
 		$body = filter_input(INPUT_POST, 'body', FILTER_DEFAULT, array(FILTER_FLAG_NO_ENCODE_QUOTES, FILTER_FLAG_STRIP_LOW, FILTER_FLAG_STRIP_HIGH, FILTER_FLAG_ENCODE_LOW, FILTER_FLAG_ENCODE_HIGH, FILTER_FLAG_ENCODE_AMP));
 		
-		if (empty($title) || empty($body))
-			return;
-		
 		$post = new Post();
 		$post->postId = $postId;
 		$post->userId = $userId;
 		$post->title = $title;
 		$post->body = $body;
-		$post->save();
 		
-		return (string)$post;
+		if ($post->save())
+		{
+			return (string)$post;
+		}
 	}
 	
 	public function updatePost()
@@ -123,15 +122,14 @@ class PostDetails extends AbstractPage
 		$title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
 		$body = filter_input(INPUT_POST, 'body', FILTER_DEFAULT, array(FILTER_FLAG_NO_ENCODE_QUOTES, FILTER_FLAG_STRIP_LOW, FILTER_FLAG_STRIP_HIGH, FILTER_FLAG_ENCODE_LOW, FILTER_FLAG_ENCODE_HIGH, FILTER_FLAG_ENCODE_AMP));
 		
-		if (empty($title) || empty($body))
-			return;
-		
 		$this->post->userId = $userId;
 		$this->post->title = $title;
 		$this->post->body = $body;
-		$this->post->save();
 		
-		return (string)$this->post;
+		if ($this->post->save())
+		{
+			return (string)$this->post;
+		}
 	}
 	
 	public function deletePost()
@@ -150,10 +148,6 @@ class PostDetails extends AbstractPage
 		$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 		$body = filter_input(INPUT_POST, 'body', FILTER_SANITIZE_STRING);
 		
-		// Validate
-		if ((empty($name) && !App::isLoggedIn()) || empty($body))
-			return;
-		
 		$comment = new Comment();
 		$comment->postId = $postId;
 		$comment->body = $body;
@@ -169,9 +163,10 @@ class PostDetails extends AbstractPage
 			$comment->name = $name;
 		}
 		
-		$comment->save();
-		
-		return (string)$comment;
+		if ($comment->save())
+		{
+			return (string)$comment;
+		}
 	}
 	
 	public function deleteComment()

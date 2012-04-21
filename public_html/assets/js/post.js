@@ -102,7 +102,7 @@ function cancelEditPost() {
 	var url = concatenatePageURL($app.baseURL, 'PostDetails', postURL, {action: 'getPost', onlyContents: true});
 	console.log('Retrieving original post with url: ' + url);
 	$.get(url, function (data) {
-		// Cancel successfull
+		// Cancel successful
 		if (data.length > 0) {
 			post.replaceWith(data);
 		}
@@ -111,17 +111,24 @@ function cancelEditPost() {
 
 function savePost() {
 	var post = currentEditPost;
+	
+	// Validate post
+	if (!validatePost(post)) {
+		console.log('Failed to validate post: ' + post.attr('id'));
+		return;
+	}
+	
 	setPostEditMode(post, false);
 	
 	console.log('Saving post: ' + post.attr('id'));
 	
 	// Get title
 	var titleElement = post.find('.title');
-	var title = titleElement.text();
+	var title = $.trim(titleElement.text());
 	
 	// Get body
 	var bodyElement = post.find('.body');
-	var body = bodyElement.html();
+	var body = $.trim(bodyElement.html());
 	
 	// Fetch contents
 	var isNewPost = (post.attr('id') == 'post-0');
@@ -149,7 +156,48 @@ function savePost() {
 	});
 }
 
+
 /* Helper functions */
+
+function validatePost(post) {
+	// Get title
+	var titleElement = post.find('.title');
+	var title = $.trim(titleElement.text());
+	var titleError = !validatePostTitle(title);
+	
+	// Get body
+	var bodyElement = post.find('.body');
+	var body = $.trim(bodyElement.html());
+	var bodyText = $.trim(bodyElement.text());
+	var bodyError = !validatePostBody(body, bodyText);
+	
+	if (!titleError && !bodyError)
+		return true;
+}
+
+function validatePostTitle(title) {
+	if (title && title.length > 0 && title.length <= 200)
+		return true;
+}
+
+function validatePostBody(body, bodyText) {
+	if (bodyText && bodyText.length > 0 && body && body.length <= 10000)
+		return true;
+}
+
+function refreshSaveButtonState(event) {
+	console.log('Check save state');
+	var target = event.target;
+	var post = $(target).closest('article');
+	
+	var saveButtonElement = $('#toolbar-save-button');
+	if (validatePost(post)) {
+		saveButtonElement.removeClass('disabled');
+	}
+	else {
+		saveButtonElement.addClass('disabled');
+	}
+}
 
 function setPostEditMode(post, isEditMode) {
 	// Show/hide hide-on-edit-post elements

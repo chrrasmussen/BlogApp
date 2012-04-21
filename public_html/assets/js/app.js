@@ -70,14 +70,6 @@ function refreshPage() {
 }
 
 function navigateToPage(page, id, queryParameters) {
-/*
-	// Get previous state
-	var previousState = {
-	    page: $app.page,
-	    id: $app.id
-	};
-*/
-	
 	// Set new state
 	$app.page = page || '';
 	$app.id = id || '';
@@ -91,11 +83,7 @@ function navigateToPage(page, id, queryParameters) {
 	var url = concatenatePageURL($app.baseURL, $app.page, $app.id, queryParameters);
 	console.log('Loading page with url: ' + url);
 	$.get(url, function (data) {
-/*
-		// Modify URL
-		var historyURL = concatenatePageURL($app.baseURL, $app.page, $app.id);
-		history.pushState(previousState, null, historyURL);
-*/
+	
 		// Fetch successful
 		if (data.length > 0) {
 			// Replace contents
@@ -112,21 +100,13 @@ function navigateToHome() {
 }
 
 
-/*
-window.addEventListener("popstate", function(event) {
-    console.log('Navigating back: ' + location.pathname);
-    console.log(event.state);
-    if (event.state != null) {
-    	console.log(event);
-    	navigateToPage(event.state.page, event.state.id);
-    }
-});
-*/
-
-
 /* Toolbar */
 
-
+$('.dropdown-menu').on('show', function(event) {
+	console.log('Showing dropdown');
+	var emailElement = $('#login-email');
+	emailElement.focus();
+});
 
 function showEditPostToolbar(show) {
 	showElement('#edit-post-toolbar', show);

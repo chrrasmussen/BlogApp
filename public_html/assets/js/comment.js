@@ -10,13 +10,31 @@
 function addComment() {
 	// Get name
 	var nameElement = $('#new-comment-name');
-	var name = nameElement.val();
-	nameElement.val('');
+	var name = $.trim(nameElement.val());
+	var nameError = !validateCommentName(name);
 	
 	// Get body
 	var bodyElement = $('#new-comment-body');
-	var body = bodyElement.val();
-	bodyElement.val('');
+	var body = $.trim(bodyElement.val());
+	bodyError = !validateCommentBody(body);
+	
+	// Show alert
+	var alertElement = $('#new-comment-section .alert');
+	alertElement.hide();
+	if (nameError || bodyError)
+	{
+		var alertNameElement = alertElement.find('.name');
+		var alertNameValue = (nameError) ? 'block' : 'none';
+		alertNameElement.css('display', alertNameValue);
+		
+		var alertBodyElement = alertElement.find('.body');
+		var alertBodyValue = (bodyError) ? 'block' : 'none';
+		alertBodyElement.css('display', alertBodyValue);
+		
+		alertElement.show('fast');
+		
+		return;
+	}
 	
 	// Send request
 	var url = concatenatePageURL($app.baseURL, $app.page, $app.id, {action: 'addComment', onlyContents: true});
@@ -28,12 +46,28 @@ function addComment() {
 	$.post(url, postData, function (data) {
 		// Add comment successful
 		if (data.length > 0) {
+			// Add comment
 			var commentsElement = $('#comments-section');
 			commentsElement.append(data);
 			
+			// Reset form fields
+			nameElement.val('');
+			bodyElement.val('');
+			
+			// Refresh no comments text
 			refreshNoCommentsText();
 		}
 	});
+}
+
+function validateCommentName(name) {
+	if (name && name.length > 0 && name.length <= 40)
+		return true;
+}
+
+function validateCommentBody(body) {
+	if (body && body.length > 0 && body.length <= 1000)
+		return true;
 }
 
 function refreshNoCommentsText() {

@@ -88,27 +88,36 @@ class Comment extends AbstractModel implements TemplateInterface
 	// Accessors
 	// ---
 	
-	public function getCommentId()
-	{
-		return intval($this->commentId);
-	}
-	
-	public function getPostId()
-	{
-		return intval($this->postId);
-	}
-	
-	public function getUserId()
-	{
-		return intval($this->userId);
-	}
-	
 	public function getName()
 	{
 		if ($this->getUserId() > 0 && $this->getUser() != null)
 			return $this->getUser()->fullName;
 		
 		return $this->name;
+	}
+	
+	public function setName($name)
+	{
+		// Clean input
+		$name = trim($name);
+		
+		// Validate input
+		if (empty($name) || strlen($name) > 40)
+			return;
+		
+		$this->name = $name;
+	}
+	
+	public function setBody($body)
+	{
+		// Clean input
+		$body = trim($body);
+		
+		// Validate input
+		if (empty($body) || strlen($body) > 1000)
+			return;
+		
+		$this->body = $body;
 	}
 	
 	public function getPost()
@@ -146,6 +155,12 @@ class Comment extends AbstractModel implements TemplateInterface
 			'body' => 'string',
 			'createdAt' => 'string'
 		);
+	}
+	
+	protected function validate()
+	{
+		if ($this->getName() && $this->getBody())
+			return true;
 	}
 	
 	public function delete()

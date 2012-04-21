@@ -86,14 +86,6 @@ abstract class AbstractPage implements TemplateInterface
 				}
 			}
 		}
-		
-/*
-		if ($onlyContents == false)
-		{
-			$this->viewPage();
-			return;
-		}
-*/
 	}
 	
 	

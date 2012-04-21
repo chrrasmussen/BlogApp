@@ -111,21 +111,31 @@ class Post extends AbstractModel implements TemplateInterface
 	// Accessors
 	// ---
 	
-	public function setBody($value)
+	public function setTitle($title)
 	{
-		$trimmedValue = trim($value);
-		$strippedValue = strip_tags($trimmedValue, '<h3><p><b><i><u>');
-		$this->body = $strippedValue;
+		// Clean input
+		$title = trim($title);
+		
+		// Validate input
+		if (empty($title) || strlen($title) > 200)
+			return;
+		
+		$this->title = $title;
 	}
 	
-	public function getPostId()
+	public function setBody($body)
 	{
-		return intval($this->postId);
-	}
-	
-	public function getUserId()
-	{
-		return intval($this->userId);
+		// Clean input
+		$body = strip_tags($body, '<h3><p><b><i><u>');
+		$body = preg_replace('/<(\w+)[^>]*>/siu', '<$1>', $body); // Remove the attributes from the allowed tags
+		$body = trim($body);
+		
+		// Validate input
+		$isEmpty = (strlen(strip_tags($body)) == 0);
+		if ($isEmpty || strlen($body) > 10000)
+			return;
+		
+		$this->body = $body;
 	}
 	
 	public function getPostURL()
@@ -169,6 +179,12 @@ class Post extends AbstractModel implements TemplateInterface
 		);
 	}
 	
+	protected function validate()
+	{
+		if ($this->getTitle() && $this->getBody())
+			return true;
+	}
+	
 	public function delete()
 	{
 		if (self::deletePostForId($this->getPostId()))
@@ -192,6 +208,7 @@ class Post extends AbstractModel implements TemplateInterface
 		{
 			$this->setPostId($db->insert_id);
 			$this->setModifiedAt(date('Y-m-d H:i:s'));
+			$this->setCreatedAt(date('Y-m-d H:i:s'));
 			return true;
 		}
 	}
