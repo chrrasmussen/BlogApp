@@ -8,7 +8,7 @@
     
     <div class="thumbnail hidden-phone">
       <img src="<?=App::getBaseURL()?>/assets/img/profile.jpg" alt="Profile picture">
-      <h5 style="text-align: center;">Christian Rasmussen</h5>
+      <h5>Christian Rasmussen</h5>
     </div>
     
     <div id="twitter-follow">

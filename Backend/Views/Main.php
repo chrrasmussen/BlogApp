@@ -86,6 +86,7 @@
       </p>
       <footer>
         <p>2012 &copy; <a href="http://rasmussen.io">Rasmussen I/O</a></p>
+        <p class="small">Built with <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a> and <a href="http://jquery.com">jQuery</a>.</p>
       </footer>
       
     </div><!-- .container -->

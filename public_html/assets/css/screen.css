@@ -27,6 +27,16 @@ footer a {
 	color: #333;
 }
 
+footer .small {
+	margin-top: 0;
+	font-size: 0.9em;
+	color: #666;
+}
+
+footer .small a {
+	color: #666;
+}
+
 header, .entry, #sidebar, #comments-section, #new-comment-section {
 	margin-top: 20px;
 	padding: 20px;
@@ -100,6 +110,10 @@ p {
 
 #sidebar .thumbnail img {
 	border-radius: 3px;
+}
+
+#sidebar .thumbnail h5 {
+	text-align: center;
 }
 
 #twitter-follow {
