@@ -11,7 +11,7 @@ function addComment() {
 	// Get name
 	var nameElement = $('#new-comment-name');
 	var name = $.trim(nameElement.val());
-	var nameError = !validateCommentName(name);
+	var nameError = (!validateCommentName(name) && !$app.isLoggedIn);
 	
 	// Get body
 	var bodyElement = $('#new-comment-body');

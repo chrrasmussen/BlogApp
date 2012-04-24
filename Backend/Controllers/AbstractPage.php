@@ -73,13 +73,14 @@ abstract class AbstractPage implements TemplateInterface
 			{
 				if (method_exists($this, $action))
 				{
-					if ($action == self::$defaultAction)
-					{
-						$output = ($onlyContents) ? $this->view() : $this->viewPage();
-					}
-					else
+					if ($action != self::$defaultAction || $onlyContents)
 					{
 						$output = $this->{$action}();
+					}
+					
+					if (!$onlyContents)
+					{
+						$output = $this->viewPage();
 					}
 					
 					print($output);
