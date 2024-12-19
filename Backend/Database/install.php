@@ -7,19 +7,11 @@
 	$database = $_ENV['mysql']['database'];
 	$username = $_ENV['mysql']['username'];
 	$password = $_ENV['mysql']['password'];
-	$baseURL = $_ENV['app']['baseURL'];
+
 	$sql_file = './Tables.sql';
 
 	// connect to mysql
-	mysql_connect($host, $username, $password) or
-		die(mysql_error() . "Could not connect to mysql @ {$host}");
-
-	// create and select database
-	mysql_query("drop database if exists {$database}") or
-		die(mysql_error() . "Could not drop database {$database}");
-	mysql_query("create database {$database}") or
-		die(mysql_error() . "Could not create database {$database}");
-	mysql_select_db($database);
+	$db = new mysqli($host, $username, $password, $database, $port);
 
 	// check if database file exists
 	if (!is_file($sql_file))
@@ -56,24 +48,24 @@
 	foreach ($drop_statements[1] as $query)
 	{
 		// drop queries
-		mysql_query($query) or
-			die(mysql_error(). " drop table failed: {$query}.");
+		mysqli_query($db, $query) or
+			die($db->error. " drop table failed: {$query}.");
 	}
 
 	// loop through create statements
 	foreach ($create_statements[1] as $query)
 	{
 		// create queries
-		mysql_query($query) or
-			die(mysql_error(). " create table failed: {$query}.");
+		mysqli_query($db, $query) or
+			die($db->error. " create table failed: {$query}.");
 	}
 
 	// loop through insert statements
 	foreach ($insert_statements[1] as $query)
 	{
 		// insert queries
-		mysql_query($query) or
-			die(mysql_error() . " insert failed: {$query}.");
+		mysqli_query($db, $query) or
+			die($db->error . " insert failed: {$query}.");
 	}
 
 	// show text
