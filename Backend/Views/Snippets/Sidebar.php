@@ -10,9 +10,5 @@
       <img src="<?=App::getBaseURL()?>/assets/img/profile.jpg" alt="Profile picture">
       <h5>Christian Rasmussen</h5>
     </div>
-    
-    <div id="twitter-follow">
-      <a href="https://twitter.com/RasmussenIO" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow @RasmussenIO</a>
-    </div>
   </sections>
 </aside>
